@@ -6,6 +6,8 @@ Popmusic::Application.routes.draw do
 
   get '/sc1' => 'soundclouds#sc1', as: :sc1
   get '/soundcloud' => 'soundclouds#soundcloud'
+
+  resources :routes
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 

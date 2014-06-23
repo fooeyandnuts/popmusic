@@ -18,6 +18,12 @@ class SoundcloudsController < ApplicationController
 		redirect_to @client.authorize_url()
 	end
 
+	def destroy
+		# Destroy Soundcloud session
+		session.delete(:sc_access_token)
+		redirect_to '/'
+	end
+
 	def soundcloud
 		set_sc_client
 
@@ -26,7 +32,7 @@ class SoundcloudsController < ApplicationController
 		if @playlists.count == 0
 			# No playlist?  Let's build one for them!
 			@playlists = @client.post('/playlists', :playlist => {
-			  title: 'My first dorky playlist',
+			  title: 'My first playlist',
 			  sharing: 'public'
 			})
 			# And get an array of this one back
@@ -35,6 +41,10 @@ class SoundcloudsController < ApplicationController
 
 		# Find all the favorited tracks
 		@favorites = @client.get("/me/favorites")
+
+		# Get the client name
+		@name = @client.get("/me")
+		@name = @name.username
 	end
 
 	# Soundcloud authentication
