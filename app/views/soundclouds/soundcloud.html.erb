@@ -19,43 +19,7 @@
       <p class="lead pull-center">Play your songs where you want them!</p>
 	</div>	
   <br><br><br><br>
-  <div class="row-fluid"
-    
-      	<div class="span5 offsetHalf block">
-          <div class="pull-center">
-            <h1>Playlists:</h1>
-            <ul>
-						<% @playlists.each do |p| %>
-						<li>
-							<%= link_to p.permalink_url do %>
-							<%= p.title %>, with <%= p.track_count %> tracks
-							<% end %>
-						</li>
-						<% end %>
-						</ul><br>
-            <h1><i class="icon-beaker icon-4x"></i></h1>
-            <button class="btn btn-primary btn-flat">Add new playlist<i class="pull-right icon-chevron-right icon-large"></i></button>
-          </div>
-      	</div>
-      	<div class="span5 block">
-          <div class="pull-center">
-      	 	<h1>Favorites:</h1>
-          	<ul>
-						<% @favorites.each do |f| %>
-						<li>
-							<%= link_to f.permalink_url do %>
-							<%= f.title %> ... <%= f.id %>
-							<% end %>
-						</li>
-						<% end %>
-						</ul><br>
-          	<h1><i class="icon-fire icon-4x"></i></h1>
-          	<button class="btn btn-primary btn-flat">Search for new songs<i class="pull-right icon-chevron-right icon-large"></i></button>
-          </div>
-      	</div>
-      
-  </div>  
- 	<br><br><br>
+  
 	<div class="row-fluid">
 		<h3 class="pull-center">Featuring</h3>
 	</div>	
@@ -76,7 +40,4 @@
       </div>
     </div>
 	</div>
-</div><!---/cont---->
-
-  
-  
+</div>

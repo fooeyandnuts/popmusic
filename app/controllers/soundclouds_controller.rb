@@ -1,6 +1,6 @@
 require 'soundcloud'
 class SoundcloudsController < ApplicationController
-	before_action :set_ig_acc_code, only: [:feed, :search]
+	before_action :set_ig_acc_code, only: [:feed, :search, :music]
 
 	def index
 	end
@@ -11,7 +11,7 @@ class SoundcloudsController < ApplicationController
 		# Now that there's no trace left, go get the client and set the sc_access_token
 		set_sc_client
 
-#		raise @client.get("/me").inspect
+		# raise @client.get("/me").inspect
 
 		# redirect user to authorize URL
 		# (will come back to http://localhost:3000/soundcloud)
@@ -20,8 +20,8 @@ class SoundcloudsController < ApplicationController
 
 	def destroy
 		# Destroy Soundcloud session
-		session.delete(:sc_access_token)
-		redirect_to '/'
+		session[:sc_access_token] = nil
+		redirect_to 'root_url'
 	end
 
 	def soundcloud
@@ -67,5 +67,7 @@ class SoundcloudsController < ApplicationController
 		@client = Soundcloud.new(:client_id => ENV['SC_CLIENT_ID'],
           :client_secret => ENV['SC_CLIENT_SECRET'],
           :redirect_uri => 'http://localhost:3000/soundcloud')
+	end
+	def music
 	end
 end

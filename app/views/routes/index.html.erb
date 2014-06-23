@@ -1,140 +1,9 @@
-<!-- 
-  	<script src="https://maps.googleapis.com/maps/api/js?v=3.exp"></script>
-    <script>
-// In the following example, markers appear when the user clicks on the map.
-// The markers are stored in an array.
-// The user can then click an option to hide, show or delete the markers.
-var map;
-var markers = [];
-
-function initialize() {
-  var haightAshbury = new google.maps.LatLng(37.7699298, -122.4469157);
-  var mapOptions = {
-    zoom: 12,
-    center: haightAshbury,
-    mapTypeId: google.maps.MapTypeId.TERRAIN
-  };
-  map = new google.maps.Map(document.getElementById('map-canvas'),
-      mapOptions);
-
-  // This event listener will call addMarker() when the map is clicked.
-  google.maps.event.addListener(map, 'click', function(event) {
-    addMarker(event.latLng);
-  });
-
-  // Adds a marker at the center of the map.
-  addMarker(haightAshbury);
-}
-
-// Add a marker to the map and push to the array.
-function addMarker(location) {
-  var marker = new google.maps.Marker({
-    position: location,
-    map: map
-  });
-  markers.push(marker);
-  console.log(data)
-}
-
-// Sets the map on all markers in the array.
-function setAllMap(map) {
-  for (var i = 0; i < markers.length; i++) {
-    markers[i].setMap(map);
-  }
-}
-
-// Removes the markers from the map, but keeps them in the array.
-function clearMarkers() {
-  setAllMap(null);
-}
-
-// Shows any markers currently in the array.
-function showMarkers() {
-  setAllMap(map);
-}
-
-// Deletes all markers in the array by removing references to them.
-function deleteMarkers() {
-  clearMarkers();
-  markers = [];
-}
-
-google.maps.event.addDomListener(window, 'load', initialize);
-
-    </script>
-  <body>
-    <div id="panel">
-      <input onclick="clearMarkers();" type=button value="Hide Markers">
-      <input onclick="showMarkers();" type=button value="Show All Markers">
-      <input onclick="deleteMarkers();" type=button value="Delete Markers">
-    </div>
-    <div id="map-canvas"></div>
-    <p>Click on the map to add markers.</p>
-  </body></div>
-	  	<div style='width: 800px;'>
-		  	<div id="map" style='width: 800px; height: 400px;'></div>
-			</div>	
-	</div>
-</div>
-<button id="stop-button">Stop tracking me!</button><br />
-<button id="start-button">Start tracking me!</button><br />
-<div id="mapholder"></div>
-<script>
-  var stop_butt = document.getElementById('stop-button');
-  var start_butt = document.getElementById('start-button');
-  stop_butt.onclick=stopWatch;
-  start_butt.onclick=startWatch;
-
-  var watchId = null;
-  var options = {
-    enableHighAccuracy: true,
-    timeout: 5000,
-    maximumAge: 0
-  }
-  var latlon = position.coords.latitude+","+position.coords.longitude;
-
-  var img_url = "http://maps.googleapis.com/maps/api/staticmap?center="+latlon+"&zoom=14&size=400x300&sensor=false";
-
-  // watch current position
-  function startWatch() {
-    watchID = navigator.geolocation.watchPosition(onSuccess, onError, options);
-  }
-
-  function stopWatch() {
-    navigator.geolocation.clearWatch(watchID);
-    console.log("watchID " + watchID + " stopped.");
-  }
-
-  function onSuccess(position, showPosition) {
-
-    console.log(
-      'Latitude: '          + position.coords.latitude          + '\n' +
-      'Longitude: '         + position.coords.longitude         + '\n' +
-      'Altitude: '          + position.coords.altitude          + '\n' +
-      'Accuracy: '          + position.coords.accuracy          + '\n' +
-      'Altitude Accuracy: ' + position.coords.altitudeAccuracy  + '\n' +
-      'Heading: '           + position.coords.heading           + '\n' +
-      'Speed: '             + position.coords.speed             + '\n' +
-      'Timestamp: '         + position.timestamp                + '\n');
-
-    function showPosition() {
-    	document.getElementById("mapholder").innerHTML = "<img src='"+img_url+"'>"
-		};
-
-  };
-
-  function onError(){
-    console.log("Error getting current location");
-  }
-</script>
-</div>
- -->
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html>
   <head>
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
     <meta charset="utf-8">
-    <title>Directions service (complex)</title>
+    <title>Waypoints in directions</title>
     <style>
       html, body, #map-canvas {
         height: 100%;
@@ -154,89 +23,56 @@ google.maps.event.addDomListener(window, 'load', initialize);
     </style>
     <script src="https://maps.googleapis.com/maps/api/js?v=3.exp"></script>
     <script>
-var map;
 var directionsDisplay;
-var directionsService;
-var stepDisplay;
-var markerArray = [];
+var directionsService = new google.maps.DirectionsService();
+var map;
 
 function initialize() {
-  // Instantiate a directions service.
-  directionsService = new google.maps.DirectionsService();
-
-  // Create a map and center it on Manhattan.
-  var manhattan = new google.maps.LatLng(40.7711329, -73.9741874);
+  directionsDisplay = new google.maps.DirectionsRenderer();
+  var chicago = new google.maps.LatLng(41.850033, -87.6500523);
   var mapOptions = {
-    zoom: 13,
-    center: manhattan
+    zoom: 6,
+    center: chicago
   }
   map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
-
-  // Create a renderer for directions and bind it to the map.
-  var rendererOptions = {
-    map: map
-  }
-  directionsDisplay = new google.maps.DirectionsRenderer(rendererOptions)
-
-  // Instantiate an info window to hold step text.
-  stepDisplay = new google.maps.InfoWindow();
+  directionsDisplay.setMap(map);
 }
 
 function calcRoute() {
-
-  // First, remove any existing markers from the map.
-  for (var i = 0; i < markerArray.length; i++) {
-    markerArray[i].setMap(null);
-  }
-
-  // Now, clear the array itself.
-  markerArray = [];
-
-  // Retrieve the start and end locations and create
-  // a DirectionsRequest using WALKING directions.
   var start = document.getElementById('start').value;
   var end = document.getElementById('end').value;
+  var waypts = [];
+  var checkboxArray = document.getElementById('waypoints');
+  for (var i = 0; i < checkboxArray.length; i++) {
+    if (checkboxArray.options[i].selected == true) {
+      waypts.push({
+          location:checkboxArray[i].value,
+          stopover:true});
+    }
+  }
+
   var request = {
       origin: start,
       destination: end,
-      travelMode: google.maps.TravelMode.WALKING
+      waypoints: waypts,
+      optimizeWaypoints: true,
+      travelMode: google.maps.TravelMode.DRIVING
   };
-
-  // Route the directions and pass the response to a
-  // function to create markers for each step.
   directionsService.route(request, function(response, status) {
     if (status == google.maps.DirectionsStatus.OK) {
-      var warnings = document.getElementById('warnings_panel');
-      warnings.innerHTML = '<b>' + response.routes[0].warnings + '</b>';
       directionsDisplay.setDirections(response);
-      showSteps(response);
+      var route = response.routes[0];
+      var summaryPanel = document.getElementById('directions_panel');
+      summaryPanel.innerHTML = '';
+      // For each route, display summary information.
+      for (var i = 0; i < route.legs.length; i++) {
+        var routeSegment = i + 1;
+        summaryPanel.innerHTML += '<b>Route Segment: ' + routeSegment + '</b><br>';
+        summaryPanel.innerHTML += route.legs[i].start_address + ' to ';
+        summaryPanel.innerHTML += route.legs[i].end_address + '<br>';
+        summaryPanel.innerHTML += route.legs[i].distance.text + '<br><br>';
+      }
     }
-  });
-}
-
-function showSteps(directionResult) {
-  // For each step, place a marker, and add the text to the marker's
-  // info window. Also attach the marker to an array so we
-  // can keep track of it and remove it when calculating new
-  // routes.
-  var myRoute = directionResult.routes[0].legs[0];
-
-  for (var i = 0; i < myRoute.steps.length; i++) {
-    var marker = new google.maps.Marker({
-      position: myRoute.steps[i].start_location,
-      map: map
-    });
-    attachInstructionText(marker, myRoute.steps[i].instructions);
-    markerArray[i] = marker;
-  }
-}
-
-function attachInstructionText(marker, text) {
-  google.maps.event.addListener(marker, 'click', function() {
-    // Open an info window when the marker is clicked on,
-    // containing the text of the step.
-    stepDisplay.setContent(text);
-    stepDisplay.open(map, marker);
   });
 }
 
@@ -245,29 +81,40 @@ google.maps.event.addDomListener(window, 'load', initialize);
     </script>
   </head>
   <body>
-    <div id="panel">
-    <b>Start: </b>
+    <div id="map-canvas" style="float:left;width:70%;height:100%;"></div>
+    <div id="control_panel" style="float:right;width:30%;text-align:left;padding-top:20px">
+    <div style="margin:20px;border-width:2px;">
+    <b>Start:</b>
     <select id="start">
-      <option value="penn station, new york, ny">Penn Station</option>
-      <option value="grand central station, new york, ny">Grand Central Station</option>
-      <option value="625 8th Avenue, New York, NY, 10018">Port Authority Bus Terminal</option>
-      <option value="staten island ferry terminal, new york, ny">Staten Island Ferry Terminal</option>
-      <option value="101 E 125th Street, New York, NY">Harlem - 125th St Station</option>
+      <option value="Halifax, NS">Halifax, NS</option>
+      <option value="Boston, MA">Boston, MA</option>
+      <option value="New York, NY">New York, NY</option>
+      <option value="Miami, FL">Miami, FL</option>
     </select>
-    <b>End: </b>
-    <select id="end" onchange="calcRoute();">
-      <option value="260 Broadway New York NY 10007">City Hall</option>
-      <option value="W 49th St & 5th Ave, New York, NY 10020">Rockefeller Center</option>
-      <option value="moma, New York, NY">MOMA</option>
-      <option value="350 5th Ave, New York, NY, 10118">Empire State Building</option>
-      <option value="253 West 125th Street, New York, NY">Apollo Theater</option>
-      <option value="1 Wall St, New York, NY">Wall St</option>
+    <br>
+    <b>Waypoints:</b> <br>
+    <i>(Ctrl-Click for multiple selection)</i> <br>
+    <select multiple id="waypoints">
+      <option value="montreal, quebec">Montreal, QBC</option>
+      <option value="toronto, ont">Toronto, ONT</option>
+      <option value="chicago, il">Chicago</option>
+      <option value="winnipeg, mb">Winnipeg</option>
+      <option value="fargo, nd">Fargo</option>
+      <option value="calgary, ab">Calgary</option>
+      <option value="spokane, wa">Spokane</option>
     </select>
+    <br>
+    <b>End:</b>
+    <select id="end">
+      <option value="Vancouver, BC">Vancouver, BC</option>
+      <option value="Seattle, WA">Seattle, WA</option>
+      <option value="San Francisco, CA">San Francisco, CA</option>
+      <option value="Los Angeles, CA">Los Angeles, CA</option>
+    </select>
+    <br>
+      <input type="submit" onclick="calcRoute();">
     </div>
-    <div id="map-canvas"></div>
-    &nbsp;
-    <div id="warnings_panel" style="width:100%;height:10%;text-align:center"></div>
+    <div id="directions_panel" style="margin:20px;background-color:#FFEE77;"></div>
+    </div>
   </body>
 </html>
-
-
