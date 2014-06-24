@@ -5,13 +5,6 @@
 
 <div class="container"></div><div class="container-fluid"></div><div class="container">
   <br>
-  <div class="row-fluid">
-    <div class="span10 offsetHalf">
-      	
-		<i class="icon-screenshot icon-5x" style="color:#ee1111;"></i>
-    </div>
-  </div>
-   <br><br><br>
 	<div class="row-fluid">
       <h1 class="pull-center"><strong>PopMusic</strong></h1>
       <p class="lead pull-center">Play your songs where you want them!</p>
@@ -19,19 +12,33 @@
   <br><br><br><br>
   
   <div class="row-fluid">
-  	<div class="span12">
-      <div class="span3 block block-sm offsetHalf1">
-      <h2>Locations</h2>
-       	Select locations on a map where you want your favorite SoundCloud songs to play.
-      </div>
       <div class="span3 block block-sm">
-      <h2>Design</h2>
-        Use Bootply to design, prototype, extend the Bootstrap framework.
-      </div>
-      <div class="span3 block block-sm">
-      <h2>Test</h2>
-        Use Bootply to test and debud Bootstrap designs.
-      </div>
+			<h1>Playlists:</h1>
+				<ul>
+					<% @playlists.each do |p| %>
+						<li>
+						<%= link_to p.permalink_url do %>
+							<%= p.title %>, with <%= p.track_count %> tracks
+						<% end %>
+						</li>
+					<% end %>
+				</ul>
+			</div>
+			<br />
+			<br />
+		<div class="span3 block block-sm">
+			<h1>Favorites:</h1>
+			<ul>
+				<% @favorites.each do |f| %>
+					<li>
+					<%= link_to f.permalink_url do %>
+						<%= f.title %> ... <%= f.id %>
+					<% end %>
+					</li>
+				<% end %>
+			</ul>
+		</div>
+	</div>
     </div>
 	</div>
 </div>

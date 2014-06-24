@@ -1,4 +1,4 @@
 class Marker < ActiveRecord::Base
-	belongs_to :route
+	belongs_to :course
 	has_one :song
 end

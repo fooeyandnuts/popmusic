@@ -1,6 +1,6 @@
 require 'soundcloud'
 class SoundcloudsController < ApplicationController
-	before_action :set_ig_acc_code, only: [:feed, :search, :music]
+	before_action :set_ig_acc_code, only: [:feed, :search]
 
 	def index
 	end
@@ -47,6 +47,30 @@ class SoundcloudsController < ApplicationController
 		@name = @name.username
 	end
 
+	def music
+		set_sc_client
+
+
+		# Find all the playlists
+		@playlists = @client.get("/me/playlists")
+		if @playlists.count == 0
+			# No playlist?  Let's build one for them!
+			@playlists = @client.post('/playlists', :playlist => {
+			  title: 'My first playlist',
+			  sharing: 'public'
+			})
+			# And get an array of this one back
+			@playlists = @client.get("/me/playlists")
+		end
+
+		# Find all the favorited tracks
+		@favorites = @client.get("/me/favorites")
+
+		# Get the client name
+		@name = @client.get("/me")
+		@name = @name.username
+	end
+
 	# Soundcloud authentication
 	def set_sc_client
 		if session[:sc_access_token]
@@ -67,7 +91,5 @@ class SoundcloudsController < ApplicationController
 		@client = Soundcloud.new(:client_id => ENV['SC_CLIENT_ID'],
           :client_secret => ENV['SC_CLIENT_SECRET'],
           :redirect_uri => 'http://localhost:3000/soundcloud')
-	end
-	def music
 	end
 end
