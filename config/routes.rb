@@ -2,13 +2,13 @@ Popmusic::Application.routes.draw do
 
   get '/' => 'soundclouds#index'
   get '/soundclouds/feed' => 'soundclouds#feed', as: :feed
+  get '/soundclouds/music' => 'soundclouds#music', as: :music
   post '/soundclouds/search' => 'soundclouds#search', as: :search
 
   get '/sc1' => 'soundclouds#sc1', as: :sc1
   get '/soundcloud' => 'soundclouds#soundcloud'
 
-  resources :routes
-  resources :soundclouds
+  resources :routes, only: [:index, :show, :new, :create, :destroy]
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
