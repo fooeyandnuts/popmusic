@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Remove Markers</title>
+    <title>Show Courses</title>
     <style>
       html, body, #map-canvas {
         height: 100%;
@@ -88,7 +88,10 @@
     }
 
     function saveMarkers() {
-
+      var stgb = [];
+      for (i in markers)
+            stgb.push({lat: markers[i].getPosition().lat(), lng: markers[i].getPosition().lng()});
+      $.post("/courses/<%= @course.id %>", stgb);
     }
 
     google.maps.event.addDomListener(window, 'load', initialize);

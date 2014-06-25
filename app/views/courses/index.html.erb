@@ -4,7 +4,7 @@
 			<ul>
 				<% @courses.each do |c| %>
 					<li>
-						<%= course.name %>
+						<%= link_to c.name, c %>
 					</li>
 				<% end %>
 				<%= button_to method: :new %>

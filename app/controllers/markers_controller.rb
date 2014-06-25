@@ -7,10 +7,11 @@ class MarkersController < ApplicationController
 
 	def create
 		@marker = Marker.new(marker_params)
+		raise params.inspect
 
     if @marker.save
       respond_to do |format|
-        format.html { redirect_to markers_path }
+        format.html { redirect_to course_path }
         format.json { render json: @marker, status: :created }
       end
     else

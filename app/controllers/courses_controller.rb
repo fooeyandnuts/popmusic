@@ -1,6 +1,8 @@
 class CoursesController < ApplicationController
+	before_action :setcourse, only: [:show]
+
 	def index
-		raise "Hello I'm here!"
+		@courses = Course.all
 	end
 
 	def new
@@ -12,9 +14,21 @@ class CoursesController < ApplicationController
 		redirect_to courses_path
 	end
 
+	def show
+		@markers = Course.find(params[:id]).markers
+	end
+
+	def add_markers
+		raise params.inspect
+	end
+
 	protected
 
 	def courseparams
 		params.require(:course).permit(:name)
+	end
+
+	def setcourse
+		@course = Course.find(params[:id])
 	end
 end
