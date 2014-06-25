@@ -15,7 +15,7 @@
 //= require angular
 //= require angular-resource
 //= require angular-rails-templates
-//= require underscore
+
 //= require gmaps/google
 //= require bootstrap
 //= require_tree ./templates

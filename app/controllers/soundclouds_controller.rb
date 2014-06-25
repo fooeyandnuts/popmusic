@@ -71,6 +71,11 @@ class SoundcloudsController < ApplicationController
 		@name = @name.username
 	end
 
+	# def course
+	# 	set_sc_client
+	# 	@favorites = @client.get("/me/favorites")
+	# end
+
 	# Soundcloud authentication
 	def set_sc_client
 		if session[:sc_access_token]

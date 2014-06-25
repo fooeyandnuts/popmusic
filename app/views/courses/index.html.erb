@@ -1,0 +1,16 @@
+<div class="row-fluid">
+  <div class="span3 block block-sm">
+		<h1>Saved Courses</h1>
+			<ul>
+				<% @courses.each do |c| %>
+					<li>
+						<%= course.name %>
+					</li>
+				<% end %>
+				<%= button_to method: :new %>
+			</ul>
+	</div>
+<br />
+<br />
+</div>
+
