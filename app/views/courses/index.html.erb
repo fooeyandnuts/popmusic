@@ -1,16 +1,17 @@
-<div class="row-fluid">
-  <div class="span3 block block-sm">
-		<h1>Saved Courses</h1>
+<div class="container"></div><div class="container-fluid"></div><div class="container"><br>
+	<div class="row-fluid">
+	  <div class="span3 block block-sm">
+			<h1>Saved Courses</h1>
 			<ul>
 				<% @courses.each do |c| %>
 					<li>
 						<%= link_to c.name, c %>
+						<%= button_to "Edit Route", method: :edit %>
+						<%= button_to "Delete Route", method: :destroy %>
 					</li>
 				<% end %>
-				<%= button_to method: :new %>
+					<li><%= button_to "New Route", method: :new %></li>
 			</ul>
+		</div>
 	</div>
-<br />
-<br />
 </div>
-

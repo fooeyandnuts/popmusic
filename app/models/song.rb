@@ -1,3 +1,3 @@
 class Song < ActiveRecord::Base
-	has_one :marker
+  belongs_to :marker
 end

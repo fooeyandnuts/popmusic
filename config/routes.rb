@@ -1,7 +1,10 @@
 Popmusic::Application.routes.draw do
 
   resources :courses
-  post '/course/:id' => 'courses#add_markers'
+  resources :markers
+  resources :songs
+  
+  post '/courses/:id' => 'courses#add_markers'
 
   get '/' => 'soundclouds#index'
   get '/soundclouds/feed' => 'soundclouds#feed', as: :feed

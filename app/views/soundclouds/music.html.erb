@@ -1,16 +1,15 @@
-<div class="container"></div><div class="container-fluid"></div><div class="container">
-  <br>
+<div class="container"></div><div class="container-fluid"></div><div class="container"><br>
 	<div class="row-fluid">
-	      <div class="span3 block block-sm">
-				<h1>Playlists:</h1>
-					<ul>
-						<% @playlists.each do |p| %>
-							<li>
-							<%= link_to p.permalink_url do %>
-								<%= p.title %>, with <%= p.track_count %> tracks
-							<% end %>
-							</li>
+    <div class="span3 block block-sm">
+			<h1>Playlists:</h1>
+				<ul>
+					<% @playlists.each do |p| %>
+					<li>
+						<%= link_to p.permalink_url do %>
+						<%= p.title %>, with <%= p.track_count %> tracks
 						<% end %>
+					</li>
+					<% end %>
 					</ul>
 				</div>
 				<br />
@@ -21,7 +20,7 @@
 					<% @favorites.each do |f| %>
 						<li>
 						<%= link_to f.permalink_url do %>
-							<%= f.title %> ... <%= f.id %>
+						<%= f.title %>
 						<% end %>
 						</li>
 					<% end %>

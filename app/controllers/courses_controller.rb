@@ -1,5 +1,5 @@
 class CoursesController < ApplicationController
-	before_action :setcourse, only: [:show]
+	before_action :set_course, only: [:show, :edit, :update, :destroy]
 
 	def index
 		@courses = Course.all
@@ -10,7 +10,7 @@ class CoursesController < ApplicationController
 	end
 
 	def create
-		@course = Course.create(courseparams)
+		@course = Course.create(course_params)
 		redirect_to courses_path
 	end
 
@@ -18,17 +18,36 @@ class CoursesController < ApplicationController
 		@markers = Course.find(params[:id]).markers
 	end
 
-	def add_markers
-		raise params.inspect
+	def update
+		@marker = Marker.new(marker_params)
+    if @marker.save
+      respond_to do |format|
+        format.html { redirect_to course_path }
+        format.json { render json: @marker, status: :created }
+      end
+    else
+      respond_to do |format|
+        format.html { render 'new' }
+        format.json { render json: @marker.errors, status: :unprocessable_entity }
+      end
+    end
 	end
+
+	def destroy
+		@course.destroy
+		respond_to do |format|
+      format.html { redirect_to courses_path }
+      format.json { render json: { head: :ok } }
+    end
+  end
 
 	protected
 
-	def courseparams
+	def course_params
 		params.require(:course).permit(:name)
 	end
 
-	def setcourse
+	def set_course
 		@course = Course.find(params[:id])
 	end
 end
