@@ -71,11 +71,6 @@ class SoundcloudsController < ApplicationController
 		@name = @name.username
 	end
 
-	# def course
-	# 	set_sc_client
-	# 	@favorites = @client.get("/me/favorites")
-	# end
-
 	# Soundcloud authentication
 	def set_sc_client
 		if session[:sc_access_token]
@@ -95,6 +90,6 @@ class SoundcloudsController < ApplicationController
 		# create client object with app credentials
 		@client = Soundcloud.new(:client_id => ENV['SC_CLIENT_ID'],
           :client_secret => ENV['SC_CLIENT_SECRET'],
-          :redirect_uri => 'http://localhost:3000/soundcloud')
+          :redirect_uri => 'http://popmusic.herokuapp.com/soundcloud')
 	end
 end
