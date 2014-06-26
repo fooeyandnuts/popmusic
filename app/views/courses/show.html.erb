@@ -83,11 +83,23 @@
 
     function saveMarkers() {
       for (var i = 0; i < markers.length; i++) {
-             var courseMarker = {'marker':{latitude: markers[i].getPosition().lat(), longitude: markers[i].getPosition().lng(), course_id: <%= @course.id %>}};
+         var courseMarker = {'marker':{latitude: markers[i].getPosition().lat(), longitude: markers[i].getPosition().lng(), course_id: <%= @course.id %>}};
           console.log(courseMarker);
        $.post("/markers", courseMarker, null, 'json');
       }
     }
+    //Places existing markers on course show view
+    var markerData;
+    $.get("/courses/" + <%= @course.id %>, function(data) {
+      markerData = data;
+      console.log(markerData.courses[0].courses)
+      for (var i = 0; i < markerData.courses.length; i++) {
+        newMarker = new google.maps.Marker({
+          position: new google.maps.LatLng(markerData.courses[i].courses.latitude, markerData.courses[i].courses.longitude), // sets the LatLng of each spot
+          map: map
+        });
+      }
+    }, "json");
 
     google.maps.event.addDomListener(window, 'load', initialize);
     </script>

@@ -16,6 +16,10 @@ class CoursesController < ApplicationController
 
 	def show
 		@markers = Course.find(params[:id]).markers
+		respond_to do |format|
+    	format.html
+      format.json { render json: @markers, status: :created }
+    end
 	end
 
 	def edit
