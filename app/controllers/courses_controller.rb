@@ -18,20 +18,23 @@ class CoursesController < ApplicationController
 		@markers = Course.find(params[:id]).markers
 	end
 
-	def update
-		@marker = Marker.new(marker_params)
-    if @marker.save
-      respond_to do |format|
-        format.html { redirect_to course_path }
-        format.json { render json: @marker, status: :created }
-      end
-    else
-      respond_to do |format|
-        format.html { render 'new' }
-        format.json { render json: @marker.errors, status: :unprocessable_entity }
-      end
-    end
+	def edit
 	end
+
+	# def update
+	# 	@marker = Marker.new(marker_params)
+ #    if @marker.save
+ #      respond_to do |format|
+ #        format.html { redirect_to course_path }
+ #        format.json { render json: @marker, status: :created }
+ #      end
+ #    else
+ #      respond_to do |format|
+ #        format.html { render 'new' }
+ #        format.json { render json: @marker.errors, status: :unprocessable_entity }
+ #      end
+ #    end
+	# end
 
 	def destroy
 		@course.destroy
