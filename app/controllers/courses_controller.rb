@@ -1,6 +1,8 @@
 class CoursesController < ApplicationController
 	before_action :set_course, only: [:show, :edit, :update, :destroy]
 
+	respond_to :json, :html
+
 	def index
 		@courses = Course.all
 	end
@@ -25,20 +27,19 @@ class CoursesController < ApplicationController
 	def edit
 	end
 
-	# def update
-	# 	@marker = Marker.new(marker_params)
- #    if @marker.save
- #      respond_to do |format|
- #        format.html { redirect_to course_path }
- #        format.json { render json: @marker, status: :created }
- #      end
- #    else
- #      respond_to do |format|
- #        format.html { render 'new' }
- #        format.json { render json: @marker.errors, status: :unprocessable_entity }
- #      end
- #    end
-	# end
+	def update
+    if @course.update(course_params)
+      respond_to do |format|
+        format.html { redirect_to courses_path }
+        format.json { render nothing: true, status: :no_content }
+      end
+    else
+      respond_to do |format|
+        format.html { render 'edit' }
+        format.json { render json: @course.errors, status: :unprocessable_entity }
+      end
+    end
+	end
 
 	def destroy
 		@course.destroy

@@ -3,8 +3,7 @@ require 'spec_helper'
 describe CoursesController do
   let :valid_attributes do
     {
-      :name => "marathon",
-      :markers => true,
+      :name => "marathon"
     }
   end
 
@@ -73,25 +72,6 @@ describe CoursesController do
     end
   end
 
-  describe "GET edit" do
-    before do
-      @course = Course.create! valid_attributes
-      get :edit, id: @course.id
-    end
-
-    it "should render the index template" do
-      expect(response).to render_template :edit
-    end
-
-    it "should succeed" do
-      expect(response).to be_success
-    end
-
-    it "should assign courses to all courses" do
-      expect(assigns(:course)).to eq(@course)
-    end
-  end
-
   describe "GET new" do
     before do
       get :new
@@ -120,9 +100,9 @@ describe CoursesController do
       end
 
       describe "html format" do
-        it "should redirect to the index page for yogurts" do
+        it "should redirect to the index page for courses" do
           post :create, course: valid_attributes
-          expect(response).to redirect_to yogurts_path
+          expect(response).to redirect_to courses_path
         end
       end
 
@@ -166,73 +146,8 @@ describe CoursesController do
         end
 
         it "should render errors in the model" do
-          post :create, yogurt: invalid_attributes, format: :json
+          post :create, course: invalid_attributes, format: :json
           expect(JSON.parse(response.body)["name"]).to eq(["can't be blank"])
-        end
-      end
-    end
-  end
-
-  describe "PUT update" do
-    before do
-      @test_course = Course.create! valid_attributes
-    end
-
-    describe "with successful update" do
-      let :update_attributes do
-        {
-          :name => "10k"
-        }
-      end
-
-      it "should update the course record in the database" do
-        put :update, id: @test_course.id, course: update_attributes
-        expect(@test_course.reload.quantity).to eq(6.0)
-      end
-
-      describe "html format" do
-        it "should redirect to the index of all courses" do
-          put :update, id: @test_course.id, course: update_attributes
-          expect(response).to redirect_to courses_path
-        end
-      end
-
-      describe "json format" do
-        it "should respond with no content" do
-          put :update, id: @test_course.id, course: update_attributes, format: :json
-          expect(response.status).to be(204)
-        end
-      end
-    end
-
-    describe "with invalid update attributes" do
-      let :invalid_update_attributes do
-        {
-          :name => "1234"
-        }
-      end
-
-      it "should not update the course record in the database" do
-        put :update, id: @test_course.id, course: invalid_update_attributes
-        expect(@test_course.reload.name).to eq(marathon)
-      end
-
-      describe "html format" do
-        it "should rerender the edit view template" do
-          put :update, id: @test_course.id, course: invalid_update_attributes
-          expect(response).to render_template :edit
-        end
-      end
-
-      describe "json format" do
-        it "should respond with unprocessable entity status" do
-          put :update, id: @test_course.id, course: invalid_update_attributes, format: :json
-          expect(response.status).to be(422)
-        end
-
-        it "should render errors in the model" do
-          put :update, id: @test_course.id, course: invalid_update_attributes, format: :json
-          expect(JSON.parse(response.body)["name"]).to eq(["must be a string"])
         end
       end
     end
