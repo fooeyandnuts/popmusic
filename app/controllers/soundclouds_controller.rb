@@ -90,6 +90,6 @@ class SoundcloudsController < ApplicationController
 		# create client object with app credentials
 		@client = Soundcloud.new(:client_id => ENV['SC_CLIENT_ID'],
           :client_secret => ENV['SC_CLIENT_SECRET'],
-          :redirect_uri => 'http://popmusic.herokuapp.com/soundcloud')
+          :redirect_uri => 'http://0.0.0.0:3000/soundcloud')
 	end
 end

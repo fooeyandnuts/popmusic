@@ -41,22 +41,47 @@
       google.maps.event.addListener(map, 'click', function(event) {
         addMarker(event.latLng);
       });
-    }
 
-    // Add a marker to the map and push to the array.
-    function addMarker(myLatLng) {
-      var marker = new google.maps.Marker({
-        position: myLatLng,
-        map: map,
-        draggable:true
-      });
-
-      google.maps.event.addListener(addMarker, 'click', function() {
-            this['infowindow'].open(map, this);
+      // Add a marker to the map and push to the array.
+      function addMarker(myLatLng) {
+        var marker = new google.maps.Marker({
+          position: myLatLng,
+          map: map,
+          draggable:true
+        });
+        var contentString = $('<div class="marker-info-win">'+
+        '<div class="marker-inner-win"><span class="info-content">'+
+        '<h3 contentEditable="true" class="marker-heading">New Marker</h3>'+
+        'This is a new marker infoWindow'+ 
+        '</span>'+
+        '</div></div>');
+            
+        //Create an infoWindow
+        var infowindow = new google.maps.InfoWindow();
+        // var songs;
+        // setDropDownList(marker, infowindow, songs);
+        
+        //set the content of infoWindow
+        infowindow.setContent(contentString[0]);
+        
+        //add click event listener to marker which will open infoWindow          
+        google.maps.event.addListener(marker, 'rightclick', function() {
+            infowindow.open(map,marker); // click on marker opens info window 
         });
 
       markers.push(marker);
+      };
+
+      
+
+
+
+      // google.maps.event.addListener(markers, 'click', function() {
+      //   this['infowindow'].open(map, this);
+      // });
     }
+
+    
 
     // Sets the map on all markers in the array.
     function setAllMap(map) {
@@ -83,7 +108,7 @@
 
     function saveMarkers() {
       for (var i = 0; i < markers.length; i++) {
-         var courseMarker = {'marker':{latitude: markers[i].getPosition().lat(), longitude: markers[i].getPosition().lng(), course_id: <%= @course.id %>}};
+         var courseMarker = {'marker':{latitude: markers[i].getPosition().lat(), longitude: markers[i].getPosition().lng(), title: markers[i].document.getElementById("marker-heading"), course_id: <%= @course.id %>}};
           console.log(courseMarker);
        $.post("/markers", courseMarker, null, 'json');
       }
@@ -92,7 +117,7 @@
     var markerData;
     $.get("/courses/" + <%= @course.id %>, function(data) {
       markerData = data;
-      console.log(markerData.courses[0].courses)
+      console.log(markerData.courses[i].courses)
       for (var i = 0; i < markerData.courses.length; i++) {
         newMarker = new google.maps.Marker({
           position: new google.maps.LatLng(markerData.courses[i].courses.latitude, markerData.courses[i].courses.longitude), // sets the LatLng of each spot
@@ -106,7 +131,7 @@
   </head>
   <body>
     
-    <div id="map-canvas"><p>Click on the map to add markers.</div>
+    <div id="map-canvas"><p>Click on the map to add markers.</p></div>
 
     <div id="panel">
       <input onclick="deleteMarkers();" type=button value="Clear Markers">

@@ -58,4 +58,8 @@ class CoursesController < ApplicationController
 	def set_course
 		@course = Course.find(params[:id])
 	end
+
+	def songs
+		@favorites = @client.get("/me/favorites")
+	end
 end
